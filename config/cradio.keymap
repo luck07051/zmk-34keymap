@@ -11,6 +11,8 @@
 #define NUM 1
 #define FUN 2
 #define NAV 3
+#define MIS 4
+#define OSU 5
 
 // Home row mods macro
 #define HRML(k1,k2,k3,k4) &ht LGUI k1  &ht LCTRL k2  &ht LSHFT k3  &ht LALT k4
@@ -81,6 +83,8 @@
         // Thumb combos
         COMBO(escape,         &kp ESCAPE,         30 31,  DEF NUM,  80)
         COMBO(enter,          &kp ENTER,          32 33,  DEF NUM,  80)
+
+        COMBO(osu2defualt,    &to DEF,            30 33,  OSU,      50)
     };
 
     keymap {
@@ -105,7 +109,7 @@
 
         function_layer {
             bindings = <
-            &trans     &trans     OUTBLE     OUTUSB     BTCLR          BTSEL(0)   BTSEL(1)   BTSEL(2)   BTSEL(3)  BTSEL(4)
+            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans    &trans
             HRML(F7,   F8,        F9,        F10)       &kp F12        &kp F11    HRMR(F1,   F2,        F3,       F4)
             &trans     &trans     &trans     &kp F6     &trans         &trans     &kp F5     &trans     &trans    &trans
                                              &trans     &trans         &trans     &sl NUM
@@ -117,7 +121,25 @@
             &trans     &trans     &caps_word &trans     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END   &trans
             HRML(ESC,  TAB,       DEL,       BSPC)      &kp ENTER      &kp LARW   &kp DARW   &kp UARW   &kp RARW  &trans
             &trans     &trans     &trans     &kp INS    &trans         &trans     &trans     &trans     &trans    &trans
-                                             &trans     &trans         &trans     &trans
+                                             &sl MIS    &trans         &trans     &trans
+            >;
+        };
+
+        miscellaneous_layer {
+            bindings = <
+            &trans     &trans     OUTBLE     OUTUSB     BTCLR          BTSEL(0)   BTSEL(1)   BTSEL(2)   BTSEL(3)  BTSEL(4)
+            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans    &trans
+            &trans     &trans     &trans     &trans     &trans         &trans     &to OSU    &trans     &trans    &trans
+                                             &sl NAV    &trans         &trans     &trans
+            >;
+        };
+
+        osu_layer {
+            bindings = <
+            &kp Q      &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &kp P
+            &kp A      &kp S      &kp D      &kp F      &kp G          &kp H      &kp J      &kp K      &kp L      &kp SQT
+            &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp LARW   &kp DARW   &kp UARW   &kp RARW
+                                             &kp TAB    &kp ESC        &kp ENTER  &kp SPACE
             >;
         };
     };
