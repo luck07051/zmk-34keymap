@@ -9,9 +9,19 @@
 // Layer name
 #define DEF 0
 #define NUM 1
-#define NAV 2
+#define FUN 2
+#define NAV 3
 
+// Home row mods macro
+#define HRML(k1,k2,k3,k4) &ht LGUI k1  &ht LCTRL k2  &ht LSHFT k3  &ht LALT k4
+#define HRMR(k1,k2,k3,k4) &ht RALT k1  &ht RSHFT k2  &ht RCTRL k3  &ht RGUI k4
 
+#define BTSEL(index) &bt BT_SEL index
+#define BTCLR        &bt BT_CLR
+#define OUTUSB       &out OUT_USB
+#define OUTBLE       &out OUT_BLE
+
+// Combo macro
 #define COMBO(name, keycode, pos, layer, time) name { \
         bindings = <keycode>; \
         key-positions = <pos>; \
@@ -44,24 +54,6 @@
             global-quick-tap;
             bindings = <&kp>, <&kp>;
         };
-
-        // tap: sticky NUM | double-tap: to NUM
-        td_num: tap_dance_num {
-            compatible = "zmk,behavior-tap-dance";
-            label = "TAP_DANCE_NUM";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&sl NUM>, <&to NUM>;
-        };
-
-        // tap: sticky NAV | double-tap: to NAV
-        td_nav: tap_dance_nav {
-            compatible = "zmk,behavior-tap-dance";
-            label = "TAP_DANCE_NAV";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&sl NAV>, <&to NAV>;
-        };
     };
 
     combos {
@@ -69,32 +61,26 @@
 
         COMBO(caps_word,        &caps_word,       1 2 3,  DEF NUM,  30)
 
-        // # tab  ' "
+        // # tab  BS |
         COMBO(hash,           &kp HASH,           1 2,    DEF NUM,  30)
         COMBO(tab,            &kp TAB,            2 3,    DEF NUM,  30)
-        COMBO(single_quote,   &kp SINGLE_QUOTE,   6 7,    DEF NUM,  30)
-        COMBO(double_quotes,  &kp DOUBLE_QUOTES,  7 8,    DEF NUM,  30)
-        // , .  ` BS |
-        COMBO(comma,          &kp COMMA,          11 12,  DEF NUM,  30)
+        COMBO(backspace,      &kp BACKSPACE,      6 7,    DEF NUM,  50)
+        COMBO(pipe,           &kp PIPE,           7 8,    DEF NUM,  30)
+        // ' .  ` , "
+        COMBO(single_quote,   &kp SINGLE_QUOTE,   11 12,  DEF NUM,  30)
         COMBO(dot,            &kp DOT,            12 13,  DEF NUM,  30)
         COMBO(grave,          &kp GRAVE,          15 16,  DEF NUM,  30)
-        COMBO(backspace,      &kp BACKSPACE,      16 17,  DEF NUM,  30)
-        COMBO(pipe,           &kp PIPE,           17 18,  DEF NUM,  30)
+        COMBO(comma,          &kp COMMA,          16 17,  DEF NUM,  30)
+        COMBO(double_quotes,  &kp DOUBLE_QUOTES,  17 18,  DEF NUM,  30)
         // ^ $  \ &
         COMBO(caret,          &kp CARET,          21 22,  DEF NUM,  30)
         COMBO(dollar,         &kp DOLLAR,         22 23,  DEF NUM,  30)
         COMBO(backslash,      &kp BACKSLASH,      26 27,  DEF NUM,  30)
         COMBO(ampersand,      &kp AMPERSAND,      27 28,  DEF NUM,  30)
 
-        // Modifiers combos
-        COMBO(left_gui,       &sk LEFT_GUI,       10 11,  DEF NUM,  30)
-        COMBO(right_gui,      &sk RIGHT_GUI,      18 19,  DEF NUM,  30)
-        COMBO(left_control,   &sk LEFT_CONTROL,   11 13,  DEF NUM,  30)
-        COMBO(right_control,  &sk RIGHT_CONTROL,  16 18,  DEF NUM,  30)
-
         // Thumb combos
         COMBO(escape,         &kp ESCAPE,         30 31,  DEF NUM,  80)
-        //COMBO(null,           &kp NULL,           32 33,  DEF NUM,  80)
+        COMBO(enter,          &kp ENTER,          32 33,  DEF NUM,  80)
     };
 
     keymap {
@@ -102,27 +88,36 @@
         default_layer {
             bindings = <
             &kp Q      &kp W      &kp F      &kp P      &kp B          &kp J      &kp L      &kp U      &kp Y      &kp MINUS
-            &kp A      &kp R      &kp S      &kp T      &kp G          &kp M      &kp N      &kp E      &kp I      &kp O
+            HRML(A,    R,         S,         T)         &kp G          &kp M      HRMR(N,    E,         I,         O)
             &kp Z      &kp X      &kp C      &kp D      &kp V          &kp K      &kp H      &kp LPAR   &kp RPAR   &kp UNDER
-                                       &td_nav  &ht LSHFT SPACE      &ht RSHFT ENTER  &td_num
+                                             &sl NAV    &kp SPACE      &kp ENTER  &sl NUM
             >;
         };
 
         number_layer {
             bindings = <
             &kp EXCL   &kp SLASH  &kp LBRC   &kp RBRC   &kp ASTRK      &kp PRCNT  &kp LBKT   &kp RBKT   &kp PLUS   &kp MINUS
-            &kp N7     &kp N8     &kp N9     &kp N0     &kp COLON      &kp QMARK  &kp N1     &kp N2     &kp N3     &kp N4
+            HRML(N7,   N8,        N9,        N0)        &kp COLON      &kp QMARK  HRMR(N1,   N2,        N3,        N4)
             &kp LT     &kp GT     &kp EQUAL  &kp N6     &kp SEMI       &kp AT     &kp N5     &kp LPAR   &kp RPAR   &kp TILDE
-                                             &to DEF    &trans         &trans     &none
+                                             &trans     &trans         &trans     &sl FUN
+            >;
+        };
+
+        function_layer {
+            bindings = <
+            &trans     &trans     OUTBLE     OUTUSB     BTCLR          BTSEL(0)   BTSEL(1)   BTSEL(2)   BTSEL(3)  BTSEL(4)
+            HRML(F7,   F8,        F9,        F10)       &kp F12        &kp F11    HRMR(F1,   F2,        F3,       F4)
+            &trans     &trans     &trans     &kp F6     &trans         &trans     &kp F5     &trans     &trans    &trans
+                                             &trans     &trans         &trans     &sl NUM
             >;
         };
 
         navigation_layer {
             bindings = <
-            &trans     &trans     &trans     &trans     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END   &trans
-            &kp ESC    &sk LGUI   &sk LCTRL  &sk LALT   &kp BSPC       &kp LARW   &kp DARW   &kp UARW   &kp RARW  &trans
-            &trans     &trans     &kp DEL    &sk LSHFT  &kp INS        &trans     &trans     &trans     &trans    &trans
-                                             &none      &trans         &trans     &to DEF
+            &trans     &trans     &caps_word &trans     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END   &trans
+            HRML(ESC,  TAB,       DEL,       BSPC)      &kp ENTER      &kp LARW   &kp DARW   &kp UARW   &kp RARW  &trans
+            &trans     &trans     &trans     &kp INS    &trans         &trans     &trans     &trans     &trans    &trans
+                                             &trans     &trans         &trans     &trans
             >;
         };
     };
