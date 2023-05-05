@@ -9,10 +9,11 @@
 // Layer name
 #define DEF 0
 #define NUM 1
-#define FUN 2
+#define SYM 2
 #define NAV 3
-#define MIS 4
-#define OSU 5
+#define FUN 4
+#define SYS 5
+#define OSU 6
 
 // Home row mods macro
 #define HRML(k1,k2,k3,k4) &ht LGUI k1  &ht LCTRL k2  &ht LSHFT k3  &ht LALT k4
@@ -39,6 +40,11 @@
     release-after-ms = <1000>;
 };
 
+&lt {
+    flavor = "tap-preferred";
+    tapping-term-ms = <220>;
+};
+
 &caps_word {
     continue-list = <UNDERSCORE MINUS BACKSPACE>;
 };
@@ -50,7 +56,7 @@
             label = "hold_tap";
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
+            flavor = "tap-preferred";
             tapping-term-ms = <220>;
             quick-tap-ms = <150>;
             global-quick-tap;
@@ -61,24 +67,18 @@
     combos {
         compatible = "zmk,combos";
 
-        COMBO(caps_word,        &caps_word,       1 2 3,  DEF NUM,  30)
+        COMBO(caps_word,        &caps_word,       1 2 3,  DEF NUM,  50)
+        COMBO(to_system_layout, &to SYS,          6 7 8,  DEF NUM,  50)
 
         // # tab  BS |
-        COMBO(hash,           &kp HASH,           1 2,    DEF NUM,  30)
-        COMBO(tab,            &kp TAB,            2 3,    DEF NUM,  30)
+        COMBO(tab,            &kp TAB,            2 3,    DEF NUM,  50)
         COMBO(backspace,      &kp BACKSPACE,      6 7,    DEF NUM,  50)
-        COMBO(pipe,           &kp PIPE,           7 8,    DEF NUM,  30)
         // ' .  ` , "
-        COMBO(single_quote,   &kp SINGLE_QUOTE,   11 12,  DEF NUM,  30)
-        COMBO(dot,            &kp DOT,            12 13,  DEF NUM,  30)
-        COMBO(grave,          &kp GRAVE,          15 16,  DEF NUM,  30)
-        COMBO(comma,          &kp COMMA,          16 17,  DEF NUM,  30)
-        COMBO(double_quotes,  &kp DOUBLE_QUOTES,  17 18,  DEF NUM,  30)
-        // ^ $  \ &
-        COMBO(caret,          &kp CARET,          21 22,  DEF NUM,  30)
-        COMBO(dollar,         &kp DOLLAR,         22 23,  DEF NUM,  30)
-        COMBO(backslash,      &kp BACKSLASH,      26 27,  DEF NUM,  30)
-        COMBO(ampersand,      &kp AMPERSAND,      27 28,  DEF NUM,  30)
+        COMBO(single_quote,   &kp SINGLE_QUOTE,   11 12,  DEF NUM,  50)
+        COMBO(dot,            &kp DOT,            12 13,  DEF NUM,  50)
+        COMBO(grave,          &kp GRAVE,          15 16,  DEF NUM,  50)
+        COMBO(comma,          &kp COMMA,          16 17,  DEF NUM,  50)
+        COMBO(double_quotes,  &kp DOUBLE_QUOTES,  17 18,  DEF NUM,  50)
 
         // Thumb combos
         COMBO(escape,         &kp ESCAPE,         30 31,  DEF NUM,  80)
@@ -94,43 +94,52 @@
             &kp Q      &kp W      &kp F      &kp P      &kp B          &kp J      &kp L      &kp U      &kp Y      &kp MINUS
             HRML(A,    R,         S,         T)         &kp G          &kp M      HRMR(N,    E,         I,         O)
             &kp Z      &kp X      &kp C      &kp D      &kp V          &kp K      &kp H      &kp LPAR   &kp RPAR   &kp UNDER
-                                             &sl NAV    &kp SPACE      &kp ENTER  &sl NUM
+                                             &sl SYM    &lt NAV SPACE  &kp ENTER  &sl NUM
             >;
         };
 
         number_layer {
             bindings = <
-            &kp EXCL   &kp SLASH  &kp LBRC   &kp RBRC   &kp ASTRK      &kp PRCNT  &kp LBKT   &kp RBKT   &kp PLUS   &kp MINUS
-            HRML(N7,   N8,        N9,        N0)        &kp COLON      &kp QMARK  HRMR(N1,   N2,        N3,        N4)
-            &kp LT     &kp GT     &kp EQUAL  &kp N6     &kp SEMI       &kp AT     &kp N5     &kp LPAR   &kp RPAR   &kp TILDE
+            &trans     &kp ASTRK  &kp EQUAL  &kp SLASH  &trans         &kp J      &kp PLUS   &kp MINUS  &kp PRCNT  &trans
+            HRML(N7,   N8,        N9,        N0)        &trans         &trans     HRMR(N1,   N2,        N3,        N4)
+            &kp LS(G)  &kp LT     &kp GT     &kp N6     &kp SEMI       &kp K      &kp N5     &kp LPAR   &kp RPAR   &kp COMMA
                                              &trans     &trans         &trans     &sl FUN
             >;
         };
 
-        function_layer {
+        symbol_layer {
             bindings = <
-            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans    &trans
-            HRML(F7,   F8,        F9,        F10)       &kp F12        &kp F11    HRMR(F1,   F2,        F3,       F4)
-            &trans     &trans     &trans     &kp F6     &trans         &trans     &kp F5     &trans     &trans    &trans
-                                             &trans     &trans         &trans     &sl NUM
+            &kp AT     &kp QMARK  &kp HASH   &kp EXCL   &kp GRAVE      &kp DQT    &kp CARET  &kp DLLR   &kp ASTRK  &kp MINUS
+            HRML(AMPS, EQUAL,     LBKT,      RBKT)      &kp PIPE       &kp SQT    HRMR(LBRC, RBRC,      COLON,     SEMI)
+            &kp BSLH   &trans     &trans     &kp TILDE  &kp PRCNT      &trans     &kp PLUS   &kp COMMA  &kp DOT    &kp SLASH
+                                             &trans     &trans         &trans     &trans
             >;
         };
 
         navigation_layer {
             bindings = <
-            &trans     &trans     &caps_word &trans     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END   &trans
-            HRML(ESC,  TAB,       DEL,       BSPC)      &kp ENTER      &kp LARW   &kp DARW   &kp UARW   &kp RARW  &trans
-            &trans     &trans     &trans     &kp INS    &trans         &trans     &trans     &trans     &trans    &trans
-                                             &sl MIS    &trans         &trans     &trans
+            &trans     &trans     &caps_word &trans     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &kp BSPC
+            HRML(ESC,  TAB,       DEL,       BSPC)      &kp ENTER      &kp LARW   &kp DARW   &kp UARW   &kp RARW   &kp ENTER
+            &trans     &trans     &trans     &kp INS    &trans         &trans     &trans     &trans     &trans     &trans
+                                             &trans     &trans         &trans     &trans
             >;
         };
 
-        miscellaneous_layer {
+        function_layer {
             bindings = <
-            &trans     &trans     OUTBLE     OUTUSB     BTCLR          BTSEL(0)   BTSEL(1)   BTSEL(2)   BTSEL(3)  BTSEL(4)
-            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans    &trans
-            &trans     &trans     &trans     &trans     &trans         &trans     &to OSU    &trans     &trans    &trans
-                                             &sl NAV    &trans         &trans     &trans
+            &trans     &trans     OUTBLE     OUTUSB     BTCLR          BTSEL(0)   BTSEL(1)   BTSEL(2)   BTSEL(3)   BTSEL(4)
+            HRML(F7,   F8,        F9,        F10)       &kp F12        &kp F11    HRMR(F1,   F2,        F3,        F4)
+            &trans     &trans     &trans     &kp F6     &trans         &trans     &kp F5     &trans     &trans     &to OSU
+                                             &trans     &trans         &trans     &sl NUM
+            >;
+        };
+
+        system_layer {
+            bindings = <
+            &trans     &trans     OUTBLE     OUTUSB     BTCLR          BTSEL(0)   BTSEL(1)   BTSEL(2)   BTSEL(3)   BTSEL(4)
+            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
+            &trans     &trans     &trans     &trans     &trans         &trans     &to OSU    &trans     &trans     &trans
+                                             &to DEF    &trans         &trans     &trans
             >;
         };
 
