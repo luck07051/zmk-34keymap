@@ -10,14 +10,21 @@
 #define DEF 0
 #define NUM 1
 #define NAV 2
-#define SYM 3
-#define PUN 4
-#define FUN 5
-#define OSU 6
+#define FUN 3
+#define OSU 4
 
 // Home row mods macro
-#define HRML(k1,k2,k3,k4) &ht LSHFT k1  &ht LCTRL k2  &ht LGUI k3  &ht LALT k4
-#define HRMR(k1,k2,k3,k4) &ht RALT k1  &ht RGUI k2  &ht RCTRL k3  &ht RSHFT k4
+#define HRML(k1,k2,k3) &mt LGUI k1  &mt LCTRL k2  &mt LALT k3
+#define HRMR(k1,k2,k3) &mt RALT k1  &mt RCTRL k2  &mt RGUI k3
+
+// Hold tap symbols
+#define TLR(k1,k2,k3,k4,k5) &kp       k1   &ht LBKT  k2   &ht RBKT k3   &ht HASH  k4   &ht AT    k5
+#define HLR(k1,k2,k3,k4,k5) HRML(     k1,            k2,           k3)  &ht EQUAL k4   &ht PIPE  k5
+#define BLR(k1,k2,k3,k4,k5) &ht BSLH  k1   &ht LT    k2   &ht GT   k3   &ht GRAVE k4   &ht AMPS  k5
+
+#define TRR(k1,k2,k3,k4,k5) &ht PRCNT k1   &ht PLUS  k2   &ht LBRC k3   &ht RBRC  k4   &kp       k5
+#define HRR(k1,k2,k3,k4,k5) &ht EXCL  k1   &ht DLLR  k2   HRMR(    k3,            k4,            k5)
+#define BRR(k1,k2,k3,k4,k5) &ht QMARK k1   &ht CARET k2   &ht LPAR k3   &ht RPAR  k4   &ht FSLH  k5
 
 // Shorthand for alignments
 #define BTSEL(index) &bt BT_SEL index
@@ -33,6 +40,7 @@
         timeout-ms = <time>; \
     };
 
+
 &sk {
     release-after-ms = <1000>;
 };
@@ -44,6 +52,11 @@
 &lt {
     flavor = "tap-preferred";
     tapping-term-ms = <220>;
+};
+
+&mt {
+    flavor = "tap-preferred";
+    tapping-term-ms = <200>;
 };
 
 &caps_word {
@@ -58,69 +71,40 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <220>;
-            quick-tap-ms = <150>;
-            global-quick-tap;
+            tapping-term-ms = <170>;
             bindings = <&kp>, <&kp>;
         };
 
-        // , '
-        comsqt: comma_sqt {
-            compatible = "zmk,behavior-mod-morph";
-            label = "comma_sqt";
-            #binding-cells = <0>;
-            bindings = <&kp COMMA>, <&kp SINGLE_QUOTE>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-        // . "
-        dotdqt: dot_dqt {
-            compatible = "zmk,behavior-mod-morph";
-            label = "dot_dqt";
-            #binding-cells = <0>;
-            bindings = <&kp DOT>, <&kp DOUBLE_QUOTES>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-        // - _
-        minund: minus_under {
-            compatible = "zmk,behavior-mod-morph";
-            label = "minus_under";
-            #binding-cells = <0>;
-            bindings = <&kp COLON>, <&kp UNDERSCORE>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-        // : ;
-        colsmi: colon_semi {
-            compatible = "zmk,behavior-mod-morph";
-            label = "colon_semi";
-            #binding-cells = <0>;
-            bindings = <&kp COLON>, <&kp SEMICOLON>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
+        tmt: thumb_mod_tap {
+            label = "thumb_mod_tap";
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <220>;
+            bindings = <&kp>, <&kp>;
         };
     };
 
     combos {
         compatible = "zmk,combos";
 
-        // Top row combos: Q /  $ :
-        COMBO(slash,          &kp SLASH,          2 3,    DEF NUM NAV SYM,  50)
-        COMBO(dollar,         &kp DOLLAR,         6 7,    DEF NUM NAV SYM,  50)
-        // Top pinky buttons
-        COMBO(def_left_top,   &kp Q,              1 2,    DEF,              50)
-        COMBO(def_right_top,  &colsmi,            7 8,    DEF,              50)
-        COMBO(sym_right_top,  &kp TILDE,          7 8,                SYM,  50)
+        // Top row combos: Q TAB  ; :
+        COMBO(kpq,            &kp Q,              1 2,    DEF,          50)
+        COMBO(tab,            &kp TAB,            2 3,    DEF NUM NAV,  50)
+        COMBO(semicolon,      &kp SEMICOLON,      6 7,    DEF NUM NAV,  50)
+        COMBO(colon,          &kp COLON,          7 8,    DEF NUM NAV,  50)
 
-        // Home row combos: SYM Esc  BS =
-        COMBO(to_symbol,      &sl SYM,            11 12,  DEF,              50)
-        COMBO(escape,         &kp ESCAPE,         12 13,  DEF NUM NAV SYM,  50)
-        COMBO(backspace,      &kp BACKSPACE,      16 17,  DEF NUM NAV SYM,  50)
-        COMBO(equal,          &kp EQUAL,          17 18,  DEF NUM NAV SYM,  50)
+        // Home row combos: ' ESC  BS "
+        COMBO(single_quote,   &kp SINGLE_QUOTE,   11 12,  DEF NUM NAV,  50)
+        COMBO(escape,         &kp ESCAPE,         12 13,  DEF NUM NAV,  50)
+        COMBO(backspace,      &kp BACKSPACE,      16 17,  DEF NUM NAV,  50)
+        COMBO(double_quotes,  &kp DOUBLE_QUOTES,  17 18,  DEF NUM NAV,  50)
 
-        // Lower row combos: & |  ( )
-        COMBO(ampersand,      &kp AMPERSAND,      21 22,  DEF NUM NAV SYM,  50)
-        COMBO(pipe,           &kp PIPE,           22 23,  DEF NUM NAV SYM,  50)
-        COMBO(lpar,           &kp LPAR,           26 27,  DEF NUM NAV SYM,  50)
-        COMBO(rpar,           &kp RPAR,           27 28,  DEF NUM NAV SYM,  50)
-        //COMBO(lrpar,          &kp RPAR,           27 28,  DEF NUM NAV SYM,  50)
+        // Lower row combos: * |  ( )
+        COMBO(astrk,          &kp ASTRK,          21 22,  DEF NUM NAV,  50)
+        COMBO(underscore,     &kp UNDERSCORE,     22 23,  DEF NUM NAV,  50)
+        COMBO(lpar,           &kp LPAR,           26 27,  DEF NUM NAV,  50)
+        COMBO(rpar,           &kp RPAR,           27 28,  DEF NUM NAV,  50)
 
 
         COMBO(osu2defualt,    &to DEF,            30 33,  OSU,      50)
@@ -130,37 +114,28 @@
         compatible = "zmk,keymap";
         default_layer {
             bindings = <
-            &kp Q      &kp W      &kp F      &kp P      &kp B          &kp J      &kp L      &kp U      &kp Y      &colsmi
-            HRML(A,    R,         S,         T)         &kp G          &kp M      HRMR(N,    E,         I,         O)
-            &kp Z      &kp X      &kp C      &kp D      &kp V          &kp K      &kp H      &comsqt    &dotdqt    &minund
-                                             &none      &lt NAV SPACE  &lt NUM ENTER  &none
+            TLR(Q,     W,         F,         P,         B)             TRR(J,     L,         U,         Y,         COLON)
+            HLR(A,     R,         S,         T,         G)             HRR(M,     N,         E,         I,         O)
+            BLR(Z,     X,         C,         D,         V)             BRR(K,     H,         COMMA,     DOT,       MINUS)
+                                      &key_repeat  &lt NAV SPACE       &tmt RSHFT ENTER  &sl NUM
             >;
         };
 
         number_layer {
             bindings = <
-            &trans     &kp N7     &kp N8     &kp N9     &kp EQUAL      &trans     &kp PLUS   &kp MINUS  &kp EXCL   &trans
-            &kp N0     &kp N4     &kp N5     &kp N6     &kp SLASH      &trans     &sk RALT   &sk RGUI   &sk RCTRL  &sk RSHFT
-            &trans     &kp N1     &kp N2     &kp N3     &kp ASTRK      &trans     &kp LT     &kp GT     &kp DOT    &trans
-                                             &trans     &kp SPACE      &none      &trans
+            TLR(Q,     FSLH,      ASTRK,     EQUAL,     TILDE)         TRR(J,     PLUS,      MINUS,     CARET,     COLON)
+            HLR(N7,    N8,        N9,        N0,        PRCNT)         HRR(EXCL,  N1,        N2,        N3,        N4)
+            BLR(Z,     X,         C,         N6,        V)             BRR(K,     N5,        COMMA,     DOT,       MINUS)
+                                             &trans     &trans         &trans     &sl FUN
             >;
         };
 
         navigation_layer {
             bindings = <
             &trans     &trans     &trans     &key_repeat &trans        &trans     &trans     &trans     &trans     &trans
-            &sk LSHFT  &sk LCTRL  &sk LGUI   &sk LALT   &trans         &kp LARW   &kp DARW   &kp UARW   &kp RARW   &trans
+            &sk LGUI   &sk LCTRL  &sk LALT   &sk LSHFT  &trans         &kp LARW   &kp DARW   &kp UARW   &kp RARW   &trans
             &trans     &trans     &trans     &trans     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &trans
                                              &trans     &none          &trans     &trans
-            >;
-        };
-
-        symbol_layer {
-            bindings = <
-            &trans     &trans     &trans     &trans     &trans         &kp HASH   &kp LBKT   &kp RBKT   &kp AT     &kp TILDE
-            &trans     &none      &none      &kp GRAVE  &trans         &kp BSLH   &kp LBRC   &kp RBRC   &kp ASTRK  &kp PLUS
-            &trans     &trans     &trans     &trans     &trans         &kp PRCNT  &kp LT     &kp GT     &kp EXCL   &kp QMARK
-                                             &trans     &trans         &kp CARET  &trans
             >;
         };
 
@@ -169,7 +144,7 @@
             //&trans     &trans     OUTBLE     OUTUSB     BTCLR          BTSEL(0)   BTSEL(1)   BTSEL(2)   BTSEL(3)   BTSEL(4)
             &trans     &kp F7     &kp F8     &kp F9     &trans         &trans     &trans     &trans     &trans     &trans
             &kp F10    &kp F4     &kp F5     &kp F6     &trans         &trans     &sk RALT   &sk RGUI   &sk RCTRL  &sk RSHFT
-            &trans     &kp F1     &kp F2     &kp F3     &trans         &trans     &trans     &trans     &trans     &trans
+            &to OSU    &kp F1     &kp F2     &kp F3     &trans         &trans     &trans     &trans     &trans     &trans
                                              &trans     &trans         &trans     &trans
             >;
         };
