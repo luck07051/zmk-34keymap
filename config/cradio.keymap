@@ -27,7 +27,7 @@
 #define HRR(k1,k2,k3,k4,k5) &kp       k1   RHRM(     k2,           k3,            k4,            k5)
 #define BRR(k1,k2,k3,k4,k5) &kp       k1   &kp       k2   &ht LPAR k3   &ht RPAR  k4   &ht FSLH  k5
 
-// Shorthand for alignments
+// Bluetooth shorthand for alignments
 #define BTSEL(index) &bt BT_SEL index
 #define BTCLR        &bt BT_CLR
 #define OUTUSB       &out OUT_USB
@@ -51,15 +51,6 @@
             bindings = <&macros_name>, <&kp>; \
         };
 
-
-&sk {
-    release-after-ms = <1000>;
-};
-
-&sl {
-    release-after-ms = <1000>;
-};
-
 &lt {
     flavor = "tap-preferred";
     tapping-term-ms = <220>;
@@ -73,7 +64,6 @@
 &caps_word {
     continue-list = <UNDERSCORE MINUS BACKSPACE>;
 };
-
 
 / {
     behaviors {
@@ -106,6 +96,8 @@
 
     combos {
         compatible = "zmk,combos";
+
+        COMBO(caps_word,      &caps_word,          13 16,  DEF,              50)
 
         // Top row combos: Q TAB  ; :
         COMBO(kpq,            &brc_ht Q Q,         1 2,    DEF,              50)
@@ -159,7 +151,7 @@
 
         navigation_layer {
             bindings = <
-            &trans     &trans     &trans     &key_repeat &trans        &trans     &trans     &trans     &trans     &trans
+            &trans     &trans     &kp LC(LS(TAB)) &kp LC(TAB) &trans        &trans     &trans     &trans     &trans     &trans
             &sk LGUI   &sk LCTRL  &sk LALT   &sk LSHFT  &trans         &kp LARW   &kp DARW   &kp UARW   &kp RARW   &trans
             &trans     &trans     &trans     &trans     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &trans
                                              &trans     &trans         &trans     &trans
