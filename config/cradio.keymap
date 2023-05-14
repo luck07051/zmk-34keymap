@@ -33,13 +33,23 @@
 #define OUTUSB       &out OUT_USB
 #define OUTBLE       &out OUT_BLE
 
-// Combo macro
+// Combo macro for shorthand
 #define COMBO(name, keycode, pos, layer, time) name { \
         bindings = <keycode>; \
         key-positions = <pos>; \
         layers = <layer>; \
         timeout-ms = <time>; \
     };
+
+// Pair hold tap behavior macro for shorthand
+#define PAIR_HT(name, label_name, macros_name) name: name { \
+            compatible = "zmk,behavior-hold-tap"; \
+            label = label_name; \
+            #binding-cells = <2>; \
+            flavor = "tap-preferred"; \
+            tapping-term-ms = <200>; \
+            bindings = <&macros_name>, <&kp>; \
+        };
 
 
 &sk {
@@ -75,31 +85,48 @@
             tapping-term-ms = <170>;
             bindings = <&kp>, <&kp>;
         };
+
+        PAIR_HT(par_ht, "par_ht", par_pair)
+        PAIR_HT(brc_ht, "brc_ht", brc_pair)
+        PAIR_HT(bkt_ht, "bkt_ht", bkt_pair)
+        PAIR_HT(lgt_ht, "lgt_ht", lgt_pair)
+        PAIR_HT(sqt_ht, "sqt_ht", sqt_pair)
+        PAIR_HT(dqt_ht, "dqt_ht", dqt_pair)
+
+    };
+
+    macros {
+        ZMK_MACRO(par_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp LPAR &kp RPAR &kp LARW>;)
+        ZMK_MACRO(brc_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp LBRC &kp RBRC &kp LARW>;)
+        ZMK_MACRO(bkt_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp LBKT &kp RBKT &kp LARW>;)
+        ZMK_MACRO(lgt_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp LT   &kp GT   &kp LARW>;)
+        ZMK_MACRO(sqt_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp SQT  &kp SQT  &kp LARW>;)
+        ZMK_MACRO(dqt_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp DQT  &kp DQT  &kp LARW>;)
     };
 
     combos {
         compatible = "zmk,combos";
 
         // Top row combos: Q TAB  ; :
-        COMBO(kpq,            &kp Q,              1 2,    DEF,              50)
-        COMBO(tab,            &kp TAB,            2 3,    DEF NUM NAV SYM,  50)
-        COMBO(semicolon,      &kp SEMICOLON,      6 7,    DEF NUM NAV SYM,  50)
-        COMBO(colon,          &kp COLON,          7 8,    DEF NUM NAV SYM,  50)
+        COMBO(kpq,            &brc_ht Q Q,         1 2,    DEF,              50)
+        COMBO(tab,            &kp TAB,             2 3,    DEF NUM NAV SYM,  50)
+        COMBO(semicolon,      &kp SEMICOLON,       6 7,    DEF NUM NAV SYM,  50)
+        COMBO(colon,          &bkt_ht COLON COLON, 7 8,    DEF NUM NAV SYM,  50)
 
         // Home row combos: ' ESC  BS "
-        COMBO(single_quote,   &kp SINGLE_QUOTE,   11 12,  DEF NUM NAV SYM,  50)
-        COMBO(escape,         &kp ESCAPE,         12 13,  DEF NUM NAV SYM,  50)
-        COMBO(backspace,      &kp BACKSPACE,      16 17,  DEF NUM NAV SYM,  50)
-        COMBO(double_quotes,  &kp DOUBLE_QUOTES,  17 18,  DEF NUM NAV SYM,  50)
+        COMBO(single_quote,   &sqt_ht SQT SQT,     11 12,  DEF NUM NAV SYM,  50)
+        COMBO(escape,         &kp ESCAPE,          12 13,  DEF NUM NAV SYM,  50)
+        COMBO(backspace,      &kp BACKSPACE,       16 17,  DEF NUM NAV SYM,  50)
+        COMBO(double_quotes,  &dqt_ht DQT DQT,     17 18,  DEF NUM NAV SYM,  50)
 
-        // Lower row combos: - _  ( )
-        COMBO(slash,          &kp SLASH,          21 22,  DEF NUM NAV SYM,  50)
-        COMBO(underscore,     &kp UNDERSCORE,     22 23,  DEF NUM NAV SYM,  50)
-        COMBO(lpar,           &kp LPAR,           26 27,  DEF NUM NAV SYM,  50)
-        COMBO(rpar,           &kp RPAR,           27 28,  DEF NUM NAV SYM,  50)
+        // Lower row combos: / _  ( )
+        COMBO(slash,          &lgt_ht FSLH FSLH,   21 22,  DEF NUM NAV SYM,  50)
+        COMBO(underscore,     &kp UNDERSCORE,      22 23,  DEF NUM NAV SYM,  50)
+        COMBO(lpar,           &kp LPAR,            26 27,  DEF NUM NAV SYM,  50)
+        COMBO(rpar,           &par_ht RPAR RPAR,   27 28,  DEF NUM NAV SYM,  50)
 
 
-        COMBO(osu2defualt,    &to DEF,            30 33,  OSU,      50)
+        COMBO(osu2defualt,    &to DEF,             30 33,  OSU,      50)
     };
 
     conditional_layers {
