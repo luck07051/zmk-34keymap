@@ -13,19 +13,20 @@
 #define SYM 3
 #define FUN 4
 #define OSU 5
+#define OMN 6
 
 // Home row mods macro
 #define LHRM(k1,k2,k3,k4) &mt LGUI k1  &mt LCTRL k2  &mt LALT k3  &mt LSHFT k4
 #define RHRM(k1,k2,k3,k4) &mt RSHFT k1  &mt RALT k2  &mt RCTRL k3  &mt RGUI k4
 
 // Hold tap symbols
-#define TLR(k1,k2,k3,k4,k5) &kp       k1   &ht LBRC  k2   &ht RBRC k3   &kp       k4   &kp       k5
-#define HLR(k1,k2,k3,k4,k5) LHRM(     k1,            k2,           k3,            k4)  &kp       k5
-#define BLR(k1,k2,k3,k4,k5) &ht BSLH  k1   &ht LT    k2   &ht GT   k3   &kp       k4   &kp       k5
+#define TLR(k1,k2,k3,k4,k5) &kp       k1   &ht LBRC  k2   &ht RBRC k3   &ht HASH  k4   &ht QMARK k5
+#define HLR(k1,k2,k3,k4,k5) LHRM(     k1,            k2,           k3,            k4)  &ht EXCL  k5
+#define BLR(k1,k2,k3,k4,k5) &ht BSLH  k1   &ht LT    k2   &ht GT   k3   &ht PRCNT k4   &kp       k5
 
-#define TRR(k1,k2,k3,k4,k5) &kp       k1   &kp       k2   &ht LBKT k3   &ht RBKT  k4   &kp       k5
-#define HRR(k1,k2,k3,k4,k5) &kp       k1   RHRM(     k2,           k3,            k4,            k5)
-#define BRR(k1,k2,k3,k4,k5) &kp       k1   &kp       k2   &ht LPAR k3   &ht RPAR  k4   &ht FSLH  k5
+#define TRR(k1,k2,k3,k4,k5) &ht CARET k1   &ht DLLR  k2   &ht LBKT k3   &ht RBKT  k4   &kp       k5
+#define HRR(k1,k2,k3,k4,k5) &ht PIPE  k1   RHRM(     k2,           k3,            k4,            k5)
+#define BRR(k1,k2,k3,k4,k5) &kp       k1   &ht AMPS  k2   &ht LPAR k3   &ht RPAR  k4   &ht FSLH  k5
 
 // Bluetooth shorthand for alignments
 #define BTSEL(index) &bt BT_SEL index
@@ -97,7 +98,7 @@
     combos {
         compatible = "zmk,combos";
 
-        COMBO(caps_word,      &caps_word,          13 16,  DEF,              50)
+        //COMBO(caps_word,      &caps_word,          13 16,  DEF,              50)
 
         // Top row combos: Q TAB  ; :
         COMBO(kpq,            &brc_ht Q Q,         1 2,    DEF,              50)
@@ -118,7 +119,8 @@
         COMBO(rpar,           &par_ht RPAR RPAR,   27 28,  DEF NUM NAV SYM,  50)
 
 
-        COMBO(osu2defualt,    &to DEF,             30 33,  OSU,      50)
+        COMBO(osu2defualt,    &to DEF,             0 1 2 3,  OSU OMN,  50)
+        COMBO(osu2mania,      &tog OMN,            6 7 8 9,  OSU OMN,  50)
     };
 
     conditional_layers {
@@ -151,28 +153,27 @@
 
         navigation_layer {
             bindings = <
-            &trans     &trans     &kp LC(LS(TAB)) &kp LC(TAB) &trans        &trans     &trans     &trans     &trans     &trans
+            &trans     &kp LC(LS(L)) &kp LC(LS(TAB)) &kp LC(TAB) &trans        &trans     &trans     &trans     &trans     &trans
             &sk LGUI   &sk LCTRL  &sk LALT   &sk LSHFT  &trans         &kp LARW   &kp DARW   &kp UARW   &kp RARW   &trans
-            &trans     &trans     &trans     &trans     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &trans
+            &trans     &trans     &kp K_COPY &kp K_PASTE &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &trans
                                              &trans     &trans         &trans     &trans
             >;
         };
 
         symbol_layer {
             bindings = <
-            &trans     &kp LBRC   &kp RBRC   &kp PRCNT  &kp AT         &trans     &trans     &kp LBKT   &kp RBKT   &trans
+            &trans     &kp LBRC   &kp RBRC   &kp HASH   &kp AT         &trans     &kp DLLR   &kp LBKT   &kp RBKT   &trans
             LHRM(EXCL, MINUS,     PLUS,      EQUAL)     &kp GRAVE      &kp PIPE   RHRM(SLASH, ASTRK,    CARET,     QMARK)
-            &kp BSLH   &kp LT     &kp GT     &kp HASH   &kp TILDE      &kp AMPS   &kp DLLR   &kp LPAR   &kp RPAR   &trans
+            &kp BSLH   &kp LT     &kp GT     &kp PRCNT  &kp TILDE      &trans     &kp AMPS   &kp LPAR   &kp RPAR   &trans
                                              &trans     &trans         &trans     &trans
             >;
         };
 
         function_layer {
             bindings = <
-            //&trans     &trans     OUTBLE     OUTUSB     BTCLR          BTSEL(0)   BTSEL(1)   BTSEL(2)   BTSEL(3)   BTSEL(4)
-            &trans     &kp F7     &kp F8     &kp F9     &trans         &trans     &trans     &trans     &trans     &trans
-            &kp F10    &kp F4     &kp F5     &kp F6     &trans         &trans     &sk RALT   &sk RGUI   &sk RCTRL  &sk RSHFT
-            &to OSU    &kp F1     &kp F2     &kp F3     &trans         &trans     &trans     &trans     &trans     &trans
+            &trans     &trans     OUTBLE     OUTUSB     BTCLR          BTSEL(0)   BTSEL(1)   BTSEL(2)   BTSEL(3)   BTSEL(4)
+            &kp F7     &kp F8     &kp F9     &kp F10    &kp F12        &kp F11    &kp F1     &kp F2     &kp F3     &kp F4
+            &to OSU    &trans     &trans     &kp F6     &trans         &trans     &kp F5     &trans     &trans     &trans
                                              &trans     &trans         &trans     &trans
             >;
         };
@@ -183,6 +184,15 @@
             &kp A      &kp S      &kp D      &kp F      &kp G          &kp H      &kp J      &kp K      &kp L      &kp SQT
             &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp LARW   &kp DARW   &kp UARW   &kp RARW
                                              &kp TAB    &kp ESC        &kp ENTER  &kp SPACE
+            >;
+        };
+
+        osumania_layer {
+            bindings = <
+            &kp TAB    &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &kp P
+            &kp ESC    &kp S      &kp D      &kp F      &kp G          &kp H      &kp J      &kp K      &kp L      &kp ENTER
+            &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp LARW   &kp DARW   &kp UARW   &kp RARW
+                                             &kp D      &kp F          &kp J      &kp K
             >;
         };
     };
