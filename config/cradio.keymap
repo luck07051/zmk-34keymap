@@ -16,17 +16,8 @@
 #define OMN 5
 
 // Home row mods macro
-#define LHRM(k1,k2,k3,k4) &mt LGUI k1  &mt LCTRL k2  &mt LALT k3  &mt LSHFT k4
-#define RHRM(k1,k2,k3,k4) &mt RSHFT k1  &mt RALT k2  &mt RCTRL k3  &mt RGUI k4
-
-// Hold tap symbols
-#define TLR(k1,k2,k3,k4,k5) &kp       k1   &ht LBRC  k2   &ht RBRC k3   &ht HASH  k4   &ht QMARK k5
-#define HLR(k1,k2,k3,k4,k5) LHRM(     k1,            k2,           k3,            k4)  &ht EXCL  k5
-#define BLR(k1,k2,k3,k4,k5) &ht BSLH  k1   &ht LT    k2   &ht GT   k3   &ht PRCNT k4   &kp       k5
-
-#define TRR(k1,k2,k3,k4,k5) &ht CARET k1   &ht DLLR  k2   &ht LBKT k3   &ht RBKT  k4   &kp       k5
-#define HRR(k1,k2,k3,k4,k5) &ht PIPE  k1   RHRM(     k2,           k3,            k4,            k5)
-#define BRR(k1,k2,k3,k4,k5) &kp       k1   &ht AMPS  k2   &ht LPAR k3   &ht RPAR  k4   &ht FSLH  k5
+#define LHRM(k1,k2,k3,k4) &mt LGUI  k1  &mt LCTRL k2  &mt LALT  k3  &mt LSHFT k4
+#define RHRM(k1,k2,k3,k4) &mt RSHFT k1  &mt RALT  k2  &mt RCTRL k3  &mt RGUI  k4
 
 // Bluetooth shorthand for alignments
 #define BTSEL(index) &bt BT_SEL index
@@ -172,18 +163,18 @@
         compatible = "zmk,keymap";
         default_layer {
             bindings = <
-            TLR(Q,     W,         F,         P,         B)             TRR(J,     L,         U,         Y,         COLON)
-            HLR(A,     R,         S,         T,         G)             HRR(M,     N,         E,         I,         O)
-            BLR(UNDER, X,         C,         D,         V)             BRR(K,     H,         COMMA,     DOT,       MINUS)
+            &kp Q      &kp W      &kp F      &kp P      &kp B          &kp J      &kp L      &kp U      &kp Y      &kp COLON
+            LHRM(A,        R,         S,         T)     &kp G          &kp M      RHRM(N,        E,         I,         O)
+            &kp UNDER  &kp X      &kp C      &kp D      &kp V          &kp K      &kp H      &kp COMMA  &kp DOT    &kp MINUS
                                       &key_repeat  &lt NAV SPACE       &lt NUM ENTER  &trans
             >;
         };
 
         number_layer {
             bindings = <
-            TLR(Q,     FSLH,      ASTRK,     EQUAL,     B)             TRR(J,     PLUS,      MINUS,     CARET,     COLON)
-            HLR(N7,    N8,        N9,        N0,        PRCNT)         HRR(EXCL,  N1,        N2,        N3,        N4)
-            BLR(UNDER, X,         LS(G),     N6,        DLLR)          BRR(K,     N5,        COMMA,     DOT,       MINUS)
+            &kp Q      &kp FSLH   &kp ASTRK  &kp EQUAL  &kp B          &kp J      &kp PLUS   &kp MINUS  &kp CARET  &kp COLON
+            LHRM(N7,       N8,        N9,        N0)    &kp PRCNT      &kp EXCL   LHRM(N1,       N2,        N3,        N4)
+            &trans     &trans     &kp LS(G)  &kp N6     &kp DLLR       &kp K      &kp N5     &kp COMMA  &kp DOT    &kp MINUS
                                              &trans     &trans         &trans     &sl FUN
             >;
         };
