@@ -10,10 +10,10 @@
 #define DEF 0
 #define NUM 1
 #define NAV 2
-#define SYM 3
-#define FUN 4
-#define OSU 5
-#define OMN 6
+#define FUN 3
+
+#define OSU 4
+#define OMN 5
 
 // Home row mods macro
 #define LHRM(k1,k2,k3,k4) &mt LGUI k1  &mt LCTRL k2  &mt LALT k3  &mt LSHFT k4
@@ -98,59 +98,63 @@
     combos {
         compatible = "zmk,combos";
 
-        //COMBO(caps_word,      &caps_word,          13 16,  DEF,              50)
-
         // Top row combos: Q TAB @ #   ; : * ^
-        COMBO(kpq,            &brc_ht Q Q,           1  2,      DEF,              50)
-        COMBO(kpb,            &kp B,                    2  3,   DEF NUM NAV SYM,  50)
-        COMBO(at_sign,        &kp AT_SIGN,           1     3,   DEF NUM NAV SYM,  50)
-        COMBO(hash,           &kp HASH,              1  2  3,   DEF NUM NAV SYM,  50)
+        COMBO(kpq,            &brc_ht Q Q,           1  2,      DEF NUM,  50)
+        COMBO(tab,            &kp TAB,                  2  3,   DEF NUM,  50)
+        COMBO(at_sign,        &kp AT_SIGN,           1     3,   DEF NUM,  50)
+        COMBO(hash,           &kp HASH,              1  2  3,   DEF NUM,  50)
 
-        COMBO(kpj,            &kp J,                 6  7,      DEF NUM NAV SYM,  50)
-        COMBO(colon,          &bkt_ht COLON COLON,      7  8,   DEF NUM NAV SYM,  50)
-        COMBO(asterisk,       &kp ASTERISK,          6     8,   DEF NUM NAV SYM,  50)
-        COMBO(caret,          &kp CARET,             6  7  8,   DEF NUM NAV SYM,  50)
+        COMBO(semicolon,      &kp SEMICOLON,         6  7,      DEF NUM,  50)
+        COMBO(colon,          &bkt_ht COLON COLON,      7  8,   DEF NUM,  50)
+        COMBO(asterisk,       &kp ASTERISK,          6     8,   DEF NUM,  50)
+        COMBO(caret,          &kp CARET,             6  7  8,   DEF NUM,  50)
 
-        // Home row combos: ' ESC SYM $   BS " + =
-        COMBO(single_quote,   &sqt_ht SQT SQT,       11 12,     DEF NUM NAV SYM,  50)
-        COMBO(escape,         &kp ESCAPE,               12 13,  DEF NUM NAV SYM,  50)
-        COMBO(tab,            &kp TAB,               11    13,  DEF NUM NAV SYM,  50)
-        COMBO(dollar,         &kp DOLLAR,            11 12 13,  DEF NUM NAV SYM,  50)
+        // Home row combos: ' ESC TAB $   BS " + =
+        COMBO(single_quote,   &sqt_ht SQT SQT,       11 12,     DEF NUM,  50)
+        COMBO(escape,         &kp ESCAPE,               12 13,  DEF NUM,  50)
+        COMBO(caps_word,      &caps_word,            11    13,  DEF NUM,  50)
+        COMBO(dollar,         &kp DOLLAR,            11 12 13,  DEF NUM,  50)
 
-        COMBO(backspace,      &kp BACKSPACE,         16 17,     DEF NUM NAV SYM,  50)
-        COMBO(double_quotes,  &dqt_ht DQT DQT,          17 18,  DEF NUM NAV SYM,  50)
-        COMBO(plus,           &kp PLUS,              16    18,  DEF NUM NAV SYM,  50)
-        COMBO(equal,          &kp EQUAL,             16 17 18,  DEF NUM NAV SYM,  50)
-        COMBO(delete,         &kp DELETE,            15 16,     DEF NUM NAV SYM,  50)
-        COMBO(semicolon,      &kp SEMICOLON,            18 19,  DEF NUM NAV SYM,  50)
+        COMBO(backspace,      &kp BACKSPACE,         16 17,     DEF NUM,  50)
+        COMBO(double_quotes,  &dqt_ht DQT DQT,          17 18,  DEF NUM,  50)
+        COMBO(plus,           &kp PLUS,              16    18,  DEF NUM,  50)
+        COMBO(equal,          &kp EQUAL,             16 17 18,  DEF NUM,  50)
+        COMBO(delete,         &kp DELETE,            15 16,     DEF NUM,  50)
 
-        // Bottom row combos: + _ ? !   ( ) & |
-        COMBO(kpz,            &lgt_ht Z Z,           21 22,     DEF NUM NAV SYM,  50)
-        COMBO(slash,          &kp FSLH,                22 23,  DEF NUM NAV SYM,  50)
-        COMBO(question,       &kp QUESTION,          21    23,  DEF NUM NAV SYM,  50)
-        COMBO(exclamation,    &kp EXCLAMATION,       21 22 23,  DEF NUM NAV SYM,  50)
+        // Bottom row combos: Z / ? !   ( ) & |
+        COMBO(kpz,            &lgt_ht Z Z,           21 22,     DEF NUM,  50)
+        COMBO(slash,          &kp FSLH,                 22 23,  DEF NUM,  50)
+        COMBO(question,       &kp QUESTION,          21    23,  DEF NUM,  50)
+        COMBO(exclamation,    &kp EXCLAMATION,       21 22 23,  DEF NUM,  50)
 
-        COMBO(lpar,           &kp LPAR,              26 27,     DEF NUM NAV SYM,  50)
-        COMBO(rpar,           &par_ht RPAR RPAR,        27 28,  DEF NUM NAV SYM,  50)
-        COMBO(ampersand,      &kp AMPERSAND,         26    28,  DEF NUM NAV SYM,  50)
-        COMBO(pipe,           &kp PIPE,              26 27 28,  DEF NUM NAV SYM,  50)
+        COMBO(lpar,           &kp LPAR,              26 27,     DEF NUM,  50)
+        COMBO(rpar,           &par_ht RPAR RPAR,        27 28,  DEF NUM,  50)
+        COMBO(ampersand,      &kp AMPERSAND,         26    28,  DEF NUM,  50)
+        COMBO(pipe,           &kp PIPE,              26 27 28,  DEF NUM,  50)
 
-        // Other one hand combos:
-        COMBO(left_brace,     &kp LEFT_BRACE,        11 2,      DEF NUM NAV SYM,  50)
-        COMBO(right_brace,    &kp RIGHT_BRACE,          2  13,  DEF NUM NAV SYM,  50)
-        COMBO(less_than,      &kp LESS_THAN,         21 12,     DEF NUM NAV SYM,  50)
-        COMBO(greater_than,   &kp GREATER_THAN,         12 23,  DEF NUM NAV SYM,  50)
+        // Other one hand combos: { }   < >     [ ]   ~ \\
+        COMBO(left_brace,     &kp LEFT_BRACE,        11 2,      DEF NUM,  50)
+        COMBO(right_brace,    &kp RIGHT_BRACE,          2  13,  DEF NUM,  50)
+        COMBO(less_than,      &kp LESS_THAN,         21 12,     DEF NUM,  50)
+        COMBO(greater_than,   &kp GREATER_THAN,         12 23,  DEF NUM,  50)
 
-        COMBO(left_bracket,   &kp LEFT_BRACKET,      16 7,      DEF NUM NAV SYM,  50)
-        COMBO(right_bracket,  &kp RIGHT_BRACKET,        7  18,  DEF NUM NAV SYM,  50)
-        COMBO(tilde,          &kp TILDE,             26 17,     DEF NUM NAV SYM,  50)
-        COMBO(backslash,      &kp BACKSLASH,            17 28,  DEF NUM NAV SYM,  50)
+        COMBO(left_bracket,   &kp LEFT_BRACKET,      16 7,      DEF NUM,  50)
+        COMBO(right_bracket,  &kp RIGHT_BRACKET,        7  18,  DEF NUM,  50)
+        COMBO(tilde,          &kp TILDE,             26 17,     DEF NUM,  50)
+        COMBO(backslash,      &kp BACKSLASH,            17 28,  DEF NUM,  50)
 
-        COMBO(cut,            &kp K_CUT,             10 11,     DEF NUM NAV SYM,  50)
-        COMBO(copy,           &kp K_COPY,            10 12,     DEF NUM NAV SYM,  50)
-        COMBO(paste,          &kp K_PASTE,           10 13,     DEF NUM NAV SYM,  50)
-        // COMBO(select_all,     &kp ,                     7  18,  DEF NUM NAV SYM,  50)
 
+        // Vertical combos for number
+        COMBO(num1,           &kp N1,                6  16,     DEF NUM,  50)
+        COMBO(num2,           &kp N2,                7  17,     DEF NUM,  50)
+        COMBO(num3,           &kp N3,                8  18,     DEF NUM,  50)
+        COMBO(num4,           &kp N4,                17 27,     DEF NUM,  50)
+        COMBO(num5,           &kp N5,                16 26,     DEF NUM,  50)
+        COMBO(num6,           &kp N6,                13 23,     DEF NUM,  50)
+        COMBO(num7,           &kp N7,                12 22,     DEF NUM,  50)
+        COMBO(num8,           &kp N8,                1  11,     DEF NUM,  50)
+        COMBO(num9,           &kp N9,                2  12,     DEF NUM,  50)
+        COMBO(num0,           &kp N0,                3  13,     DEF NUM,  50)
 
         COMBO(osu2defualt,    &to DEF,               0 1 2 3,  OSU OMN,  50)
         COMBO(osu2mania,      &tog OMN,              6 7 8 9,  OSU OMN,  50)
@@ -160,7 +164,7 @@
         compatible = "zmk,conditional-layers";
         sym_layer {
             if-layers = <NUM NAV>;
-            then-layer = <SYM>;
+            then-layer = <FUN>;
         };
     };
 
@@ -188,16 +192,7 @@
             bindings = <
             &trans     &kp LC(LS(L)) &kp LC(LS(TAB)) &kp LC(TAB) &trans        &trans     &trans     &trans     &trans     &trans
             &sk LGUI   &sk LCTRL  &sk LALT   &sk LSHFT  &trans         &kp LARW   &kp DARW   &kp UARW   &kp RARW   &trans
-            &trans     &trans     &kp K_COPY &kp K_PASTE &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &trans
-                                             &trans     &trans         &trans     &trans
-            >;
-        };
-
-        symbol_layer {
-            bindings = <
-            &trans     &kp LBRC   &kp RBRC   &kp HASH   &kp AT         &trans     &kp DLLR   &kp LBKT   &kp RBKT   &trans
-            LHRM(EXCL, MINUS,     PLUS,      EQUAL)     &kp GRAVE      &kp PIPE   RHRM(SLASH, ASTRK,    CARET,     QMARK)
-            &kp BSLH   &kp LT     &kp GT     &kp PRCNT  &kp TILDE      &trans     &kp AMPS   &kp LPAR   &kp RPAR   &trans
+            &kp LC(A)  &kp K_CUT  &kp K_COPY &kp K_PASTE &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &trans
                                              &trans     &trans         &trans     &trans
             >;
         };
