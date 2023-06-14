@@ -9,15 +9,16 @@
 // Layer name
 #define DEF 0
 #define NUM 1
-#define NAV 2
-#define FUN 3
+#define SYM 2
+#define NAV 3
+#define FUN 4
 
-#define OSU 4
-#define OMN 5
+#define OSU 5
+#define OMN 6
 
 // Home row mods macro
-#define LHRM(k1,k2,k3,k4) &mt LGUI  k1  &mt LCTRL k2  &mt LALT  k3  &mt LSHFT k4
-#define RHRM(k1,k2,k3,k4) &mt RSHFT k1  &mt RALT  k2  &mt RCTRL k3  &mt RGUI  k4
+#define LHRM(k1,k2,k3,k4) &mt LALT  k1  &mt LGUI  k2  &mt LCTRL k3  &mt LSHFT k4
+#define RHRM(k1,k2,k3,k4) &mt RSHFT k1  &mt RCTRL k2  &mt RGUI  k3  &mt RALT  k4
 
 // Bluetooth shorthand for alignments
 #define BTSEL(index) &bt BT_SEL index
@@ -44,8 +45,9 @@
         };
 
 &lt {
-    flavor = "tap-preferred";
-    tapping-term-ms = <220>;
+    //flavor = "tap-preferred";
+    flavor = "balanced";
+    tapping-term-ms = <200>;
 };
 
 &mt {
@@ -68,6 +70,45 @@
             bindings = <&kp>, <&kp>;
         };
 
+        mo_sl: behavior_mo_sl {
+            compatible = "zmk,behavior-hold-tap";
+            label = "mo_sl";
+            #binding-cells = <2>;
+            // flavor = "hold-preferred";
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&sl>;
+        };
+
+        mo_to: behavior_mo_to {
+            compatible = "zmk,behavior-hold-tap";
+            label = "mo_to";
+            #binding-cells = <2>;
+            // flavor = "hold-preferred";
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&to>;
+        };
+
+        mo_num: behavior_mo_num {
+            compatible = "zmk,behavior-hold-tap";
+            label = "mo_num";
+            #binding-cells = <2>;
+            // flavor = "hold-preferred";
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&num_word>;
+        };
+
+        num_word: behavior_num_word {
+            compatible = "zmk,behavior-caps-word";
+            label = "NUM_WORD";
+            #binding-cells = <0>;
+            layers = <NUM>;                                // insert location of numbers layer here
+            continue-list = <BACKSPACE DELETE DOT COMMA>;  // adjust as desired
+            ignore-numbers;                                // numbers don't deactivate the layer
+        };
+
         PAIR_HT(par_ht, "par_ht", par_pair)
         PAIR_HT(brc_ht, "brc_ht", brc_pair)
         PAIR_HT(bkt_ht, "bkt_ht", bkt_pair)
@@ -78,86 +119,107 @@
     };
 
     macros {
-        ZMK_MACRO(par_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp LPAR &kp RPAR &kp LARW>;)
-        ZMK_MACRO(brc_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp LBRC &kp RBRC &kp LARW>;)
-        ZMK_MACRO(bkt_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp LBKT &kp RBKT &kp LARW>;)
-        ZMK_MACRO(lgt_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp LT   &kp GT   &kp LARW>;)
-        ZMK_MACRO(sqt_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp SQT  &kp SQT  &kp LARW>;)
-        ZMK_MACRO(dqt_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp DQT  &kp DQT  &kp LARW>;)
+        ZMK_MACRO(par_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp LPAR &kp RPAR>;)
+        ZMK_MACRO(brc_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp LBRC &kp RBRC>;)
+        ZMK_MACRO(bkt_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp LBKT &kp RBKT>;)
+        ZMK_MACRO(lgt_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp LT   &kp GT  >;)
+        ZMK_MACRO(sqt_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp SQT  &kp SQT >;)
+        ZMK_MACRO(dqt_pair, wait-ms = <0>; tap-ms = <0>; bindings = <&kp DQT  &kp DQT >;)
+
+        ZMK_MACRO(up_def,   wait-ms = <0>; tap-ms = <0>; bindings = <&kp UARW  &to DEF>;)
+        ZMK_MACRO(down_def, wait-ms = <0>; tap-ms = <0>; bindings = <&kp DARW  &to DEF>;)
+        ZMK_MACRO(lsg_def,  wait-ms = <0>; tap-ms = <0>; bindings = <&kp LS(G) &to DEF>;)
+        ZMK_MACRO(sp_def,   wait-ms = <0>; tap-ms = <0>; bindings = <&kp SPACE &to DEF>;)
     };
 
     combos {
         compatible = "zmk,combos";
 
-        // Top row combos: Q TAB @ #   ; : * ^
-        COMBO(kpq,            &brc_ht Q Q,           1  2,      DEF NUM,  50)
+        COMBO(def_layer,      &to DEF,               31 32,     DEF NUM,  50)
+
+        // Top row combos: Q TAB @ #   ; : ~ ^
+        COMBO(kpq,            &kp Q,                 1  2,      DEF NUM,  50)
         COMBO(tab,            &kp TAB,                  2  3,   DEF NUM,  50)
         COMBO(at_sign,        &kp AT_SIGN,           1     3,   DEF NUM,  50)
         COMBO(hash,           &kp HASH,              1  2  3,   DEF NUM,  50)
 
-        COMBO(semicolon,      &kp SEMICOLON,         6  7,      DEF NUM,  50)
-        COMBO(colon,          &bkt_ht COLON COLON,      7  8,   DEF NUM,  50)
-        COMBO(asterisk,       &kp ASTERISK,          6     8,   DEF NUM,  50)
-        COMBO(caret,          &kp CARET,             6  7  8,   DEF NUM,  50)
+        COMBO(equal,          &kp EQUAL,             6  7,      DEF NUM,  50)
+        COMBO(colon,          &kp COLON,                7  8,   DEF NUM,  50)
+        COMBO(caret,          &kp CARET,             6     8,   DEF NUM,  50)
+        // COMBO(colon,          &kp COLON,             6  7  8,   DEF NUM,  50)
 
-        // Home row combos: ' ESC TAB $   BS " + =
-        COMBO(single_quote,   &sqt_ht SQT SQT,       11 12,     DEF NUM,  50)
-        COMBO(escape,         &kp ESCAPE,               12 13,  DEF NUM,  50)
+        // Home row combos: SYM ESC $   BS = + *
+        COMBO(escape,         &kp ESCAPE,               12 13,  DEF NUM,  45)
+        COMBO(dollar,         &kp DOLLAR,            11 12,     DEF NUM,  45)
         COMBO(caps_word,      &caps_word,            11    13,  DEF NUM,  50)
-        COMBO(dollar,         &kp DOLLAR,            11 12 13,  DEF NUM,  50)
+        // COMBO(dollar,         &kp DOLLAR,            11 12 13,  DEF NUM,  50)
 
-        COMBO(backspace,      &kp BACKSPACE,         16 17,     DEF NUM,  50)
-        COMBO(double_quotes,  &dqt_ht DQT DQT,          17 18,  DEF NUM,  50)
+        COMBO(backspace,      &kp BACKSPACE,         16 17,     DEF NUM,  45)
+        COMBO(minus,          &kp MINUS,                17 18,  DEF NUM,  50)
         COMBO(plus,           &kp PLUS,              16    18,  DEF NUM,  50)
-        COMBO(equal,          &kp EQUAL,             16 17 18,  DEF NUM,  50)
+        COMBO(astrk,          &kp ASTRK,             16 17 18,  DEF NUM,  50)
         COMBO(delete,         &kp DELETE,            15 16,     DEF NUM,  50)
 
-        // Bottom row combos: Z / ? !   ( ) & |
-        COMBO(kpz,            &lgt_ht Z Z,           21 22,     DEF NUM,  50)
-        COMBO(slash,          &kp FSLH,                 22 23,  DEF NUM,  50)
+        // Bottom row combos: Z / ? !   ' " & |
+        COMBO(kpz,            &kp Z,                    22 23,  DEF NUM,  50)
+        COMBO(semicolon,      &kp SEMICOLON,         21 22,     DEF NUM,  50)
         COMBO(question,       &kp QUESTION,          21    23,  DEF NUM,  50)
         COMBO(exclamation,    &kp EXCLAMATION,       21 22 23,  DEF NUM,  50)
 
-        COMBO(lpar,           &kp LPAR,              26 27,     DEF NUM,  50)
-        COMBO(rpar,           &par_ht RPAR RPAR,        27 28,  DEF NUM,  50)
+        COMBO(sqt,            &kp SQT,               26 27,     DEF NUM,  50)
+        COMBO(dqt,            &kp DQT,                  27 28,  DEF NUM,  50)
         COMBO(ampersand,      &kp AMPERSAND,         26    28,  DEF NUM,  50)
         COMBO(pipe,           &kp PIPE,              26 27 28,  DEF NUM,  50)
 
-        // Other one hand combos: { }   < >     [ ]   ~ \\
-        COMBO(left_brace,     &kp LEFT_BRACE,        11 2,      DEF NUM,  50)
-        COMBO(right_brace,    &kp RIGHT_BRACE,          2  13,  DEF NUM,  50)
-        COMBO(less_than,      &kp LESS_THAN,         21 12,     DEF NUM,  50)
-        COMBO(greater_than,   &kp GREATER_THAN,         12 23,  DEF NUM,  50)
+        // Thumb combos
+        // COMBO(lbrc,           &kp LBRC,              31 12,     DEF NUM,  50)
+        // COMBO(rbrc,           &kp RBRC,              31 13,     DEF NUM,  50)
+        // COMBO(brc_pair,       &brc_pair,             31 12 13,  DEF NUM,  50)
+        // COMBO(lt,             &kp LT,                31 22,     DEF NUM,  50)
+        // COMBO(gt,             &kp GT,                31 23,     DEF NUM,  50)
+        // COMBO(lgt_pair,       &lgt_pair,             31 22 23,  DEF NUM,  50)
+        //
+        // COMBO(lpar,           &kp LPAR,              32 16,     DEF NUM,  50)
+        // COMBO(rpar,           &kp RPAR,              32 17,     DEF NUM,  50)
+        // COMBO(par_pair,       &par_pair,             32 16 17,  DEF NUM,  50)
+        // COMBO(lbkt,           &kp LBKT,              32 26,     DEF NUM,  50)
+        // COMBO(rbkt,           &kp RBKT,              32 27,     DEF NUM,  50)
+        // COMBO(bkt_pair,       &bkt_pair,             32 26 27,  DEF NUM,  50)
+        //
+        // // Thumb combos
+        // COMBO(num1,           &kp N1,                6  16,     DEF NUM,  50)
+        // COMBO(num2,           &kp N2,                7  17,     DEF NUM,  50)
+        // COMBO(num3,           &kp N3,                8  18,     DEF NUM,  50)
+        // COMBO(num4,           &kp N4,                17 27,     DEF NUM,  50)
+        // COMBO(num5,           &kp N5,                16 26,     DEF NUM,  50)
+        //
+        // COMBO(num0,           &kp N0,                3  13,     DEF NUM,  50)
+        // COMBO(num9,           &kp N9,                2  12,     DEF NUM,  50)
+        // COMBO(num8,           &kp N8,                1  11,     DEF NUM,  50)
+        // COMBO(num7,           &kp N7,                12 22,     DEF NUM,  50)
+        // COMBO(num6,           &kp N6,                13 23,     DEF NUM,  50)
 
-        COMBO(left_bracket,   &kp LEFT_BRACKET,      16 7,      DEF NUM,  50)
-        COMBO(right_bracket,  &kp RIGHT_BRACKET,        7  18,  DEF NUM,  50)
-        COMBO(tilde,          &kp TILDE,             26 17,     DEF NUM,  50)
-        COMBO(backslash,      &kp BACKSLASH,            17 28,  DEF NUM,  50)
-
-
-        // Vertical combos for number
-        COMBO(num1,           &kp N1,                6  16,     DEF NUM,  50)
-        COMBO(num2,           &kp N2,                7  17,     DEF NUM,  50)
-        COMBO(num3,           &kp N3,                8  18,     DEF NUM,  50)
-        COMBO(num4,           &kp N4,                17 27,     DEF NUM,  50)
-        COMBO(num5,           &kp N5,                16 26,     DEF NUM,  50)
-        COMBO(num6,           &kp N6,                13 23,     DEF NUM,  50)
-        COMBO(num7,           &kp N7,                12 22,     DEF NUM,  50)
-        COMBO(num8,           &kp N8,                1  11,     DEF NUM,  50)
-        COMBO(num9,           &kp N9,                2  12,     DEF NUM,  50)
-        COMBO(num0,           &kp N0,                3  13,     DEF NUM,  50)
+        // Vertical combos
+        COMBO(lpar,           &kp LPAR,              6  16,     DEF NUM,  70)
+        COMBO(rpar,           &kp RPAR,              7  17,     DEF NUM,  70)
+        COMBO(lbkt,           &kp LBKT,              16 26,     DEF NUM,  70)
+        COMBO(rbkt,           &kp RBKT,              17 27,     DEF NUM,  70)
+        COMBO(lbrc,           &kp LBRC,              2  12,     DEF NUM,  70)
+        COMBO(rbrc,           &kp RBRC,              3  13,     DEF NUM,  70)
+        COMBO(lt,             &kp LT,                12 22,     DEF NUM,  70)
+        COMBO(gt,             &kp GT,                13 23,     DEF NUM,  70)
 
         COMBO(osu2defualt,    &to DEF,               0 1 2 3,  OSU OMN,  50)
         COMBO(osu2mania,      &tog OMN,              6 7 8 9,  OSU OMN,  50)
     };
 
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-        sym_layer {
-            if-layers = <NUM NAV>;
-            then-layer = <FUN>;
-        };
-    };
+    // conditional_layers {
+    //     compatible = "zmk,conditional-layers";
+    //     sym_layer {
+    //         if-layers = <NUM NAV>;
+    //         then-layer = <FUN>;
+    //     };
+    // };
 
     keymap {
         compatible = "zmk,keymap";
@@ -165,24 +227,33 @@
             bindings = <
             &kp Q      &kp W      &kp F      &kp P      &kp B          &kp J      &kp L      &kp U      &kp Y      &kp COLON
             LHRM(A,        R,         S,         T)     &kp G          &kp M      RHRM(N,        E,         I,         O)
-            &kp UNDER  &kp X      &kp C      &kp D      &kp V          &kp K      &kp H      &kp COMMA  &kp DOT    &kp MINUS
-                                      &key_repeat  &lt NAV SPACE       &lt NUM ENTER  &trans
+            &kp UNDER  &kp X      &kp C      &lt SYM D  &kp V          &kp K      &lt SYM H  &kp COMMA  &kp DOT    &kp FSLH
+                                      &key_repeat  &lt NAV SPACE       &lt NUM ENTER    &trans
             >;
         };
 
         number_layer {
             bindings = <
-            &kp Q      &kp FSLH   &kp ASTRK  &kp EQUAL  &kp B          &kp J      &kp PLUS   &kp MINUS  &kp CARET  &kp COLON
-            LHRM(N7,       N8,        N9,        N0)    &kp PRCNT      &kp EXCL   LHRM(N1,       N2,        N3,        N4)
-            &trans     &trans     &kp LS(G)  &kp N6     &kp DLLR       &kp K      &kp N5     &kp COMMA  &kp DOT    &kp MINUS
-                                             &trans     &trans         &trans     &sl FUN
+            &trans     &kp MINUS  &kp PLUS   &kp EQUAL  &trans         &trans     &kp DARW   &kp UARW   &trans    &trans
+            LHRM(N7,       N8,        N9,        N0)    &kp LS(G)      &trans     RHRM(N1,       N2,        N3,        N4)
+            &kp PRCNT  &kp CARET  &kp ASTRK  &kp N6     &trans         &trans     &kp N5     &kp COMMA  &kp DOT   &kp FSLH
+                                             &trans     &trans         &to DEF    &sl FUN
+            >;
+        };
+
+        symbol_layer {
+            bindings = <
+            &trans     &kp LT     &kp GT     &kp EXCL   &trans         &kp TILDE  &kp LBRC   &kp RBRC   &trans     &trans
+            &kp FSLH   &kp MINUS  &kp PLUS   &kp EQUAL  &trans         &kp GRAVE  &kp LPAR   &kp RPAR   &kp BSLH   &trans
+            &kp PRCNT  &kp CARET  &kp ASTRK  &trans     &trans         &kp HASH   &kp LBKT   &kp RBKT   &kp AT     &trans
+                                             &trans     &trans         &trans     &trans
             >;
         };
 
         navigation_layer {
             bindings = <
             &trans     &kp LC(LS(L)) &kp LC(LS(TAB)) &kp LC(TAB) &trans        &trans     &trans     &trans     &trans     &trans
-            &sk LGUI   &sk LCTRL  &sk LALT   &sk LSHFT  &trans         &kp LARW   &kp DARW   &kp UARW   &kp RARW   &trans
+            &sk LALT   &sk LGUI   &sk LCTRL  &sk LSHFT  &kp PSCRN       &kp LARW   &kp DARW   &kp UARW   &kp RARW   &kp ENTER
             &kp LC(A)  &kp K_CUT  &kp K_COPY &kp K_PASTE &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &trans
                                              &trans     &trans         &trans     &trans
             >;
