@@ -18,6 +18,12 @@
 #define OSU 7
 #define OMN 8
 
+#define OBS 9
+#define ONU 10
+#define OSY 11
+#define OPA 12
+#define OME 13
+
 // Home row mods macro
 #define LHRM(k1,k2,k3,k4) &mt LALT  k1  &mt LGUI  k2  &mt LCTRL k3  &mt LSHFT k4
 #define RHRM(k1,k2,k3,k4) &mt RSHFT k1  &mt RCTRL k2  &mt RGUI  k3  &mt RALT  k4
@@ -182,7 +188,11 @@
     combos {
         compatible = "zmk,combos";
 
-        COMBO(def_layer,      &to DEF,               31 32,     DEF NUM,  50)
+        COMBO(to_def,         &to DEF,               31 32,     DEF NUM,  50)
+        COMBO(l_to_def,       &to DEF,               0 1 2 3,   OBS,  50)
+        COMBO(r_to_def,       &to DEF,               6 7 8 9,   OBS,  50)
+        COMBO(l_to_onehand,   &to OBS,               0 1 2 3,   DEF,  50)
+        COMBO(r_to_onehand,   &to OBS,               6 7 8 9,   DEF,  50)
 
         // Top row combos: Q TAB @ #   ; : ~ ^
         COMBO(kpq,            &kp Q,                 1  2,      DEF NUM,  50)
@@ -258,6 +268,70 @@
 
         COMBO(osu2defualt,    &to DEF,               0 1 2 3,  OSU OMN,  50)
         COMBO(osu2mania,      &tog OMN,              6 7 8 9,  OSU OMN,  50)
+
+        // Onehand combos [http://www.keyboard-layout-editor.com/#/gists/3949ff5171bbd401532929f5c0ae5fcd]
+        COMBO(l_one_f,          &kp F,                       12 13,  OBS,  50)
+        COMBO(l_one_g,          &kp G,                    11 12   ,  OBS,  50)
+        COMBO(l_one_j,          &kp J,                 10 11      ,  OBS,  50)
+        COMBO(l_one_y,          &kp Y,                    11    13,  OBS,  50)
+        COMBO(l_one_v,          &kp V,                 10    12   ,  OBS,  50)
+        COMBO(l_one_w,          &kp W,                 10       13,  OBS,  50)
+        COMBO(l_one_d,          &kp D,                    11 12 13,  OBS,  50)
+        COMBO(l_one_x,          &kp X,                 10 11 12   ,  OBS,  50)
+        COMBO(l_one_q,          &kp Q,                 10 11    13,  OBS,  50)
+        COMBO(l_one_z,          &kp Z,                 10 11 12 13,  OBS,  50)
+
+        COMBO(l_one_c,          &kp C,                       22 23,  OBS,  50)
+        COMBO(l_one_u,          &kp U,                    21 22   ,  OBS,  50)
+        COMBO(l_one_n,          &kp N,                 20 21      ,  OBS,  50)
+        COMBO(l_one_h,          &kp H,                    21    23,  OBS,  50)
+        COMBO(l_one_k,          &kp K,                 20    22   ,  OBS,  50)
+        COMBO(l_one_b,          &kp B,                 20       23,  OBS,  50)
+        COMBO(l_one_l,          &kp L,                    21 22 23,  OBS,  50)
+        COMBO(l_one_m,          &kp M,                 20 21 22   ,  OBS,  50)
+        COMBO(l_one_p,          &kp P,                 20 21    23,  OBS,  50)
+        COMBO(l_one_sp,         &kp SPACE,             20 21 22 23,  OBS,  50)
+
+        COMBO(l_one_comma,      &kp COMMA,                   22 13,  OBS,  50)
+        COMBO(l_one_dot,        &kp DOT,                  21    13,  OBS,  50)
+        COMBO(l_one_fslh,       &kp FSLH,              20       13,  OBS,  50)
+        COMBO(l_one_sqt,        &kp SQT,                  21 22 13,  OBS,  50)
+        COMBO(l_one_esc,        &kp ESC,               20    12 13,  OBS,  50)
+        COMBO(l_one_tab,        &kp TAB,               20 11 12 13,  OBS,  50)
+        COMBO(l_one_bs,         &kp BACKSPACE,               12 23,  OBS,  50)
+        COMBO(l_one_ctrl,       &sk LCTRL,             10       23,  OBS,  50)
+        COMBO(l_one_gui,        &sk LGUI,              10    22   ,  OBS,  50)
+        COMBO(l_one_alt,        &sk LALT,              10 21      ,  OBS,  50)
+
+        COMBO(l_one_semicolon,  &kp SEMICOLON,         20 11      ,  OBS,  50)
+        COMBO(l_one_colon,      &kp COLON,             20    12   ,  OBS,  50)
+        COMBO(l_one_question,   &kp QUESTION,          20 11    13,  OBS,  50)
+        COMBO(l_one_dqt,        &kp DQT,               20 21    13,  OBS,  50)
+        COMBO(l_one_excl,       &kp EXCL,              11 21      ,  OBS,  50)
+        COMBO(l_one_enter,      &kp ENTER,             13 23      ,  OBS,  50)
+        COMBO(l_one_delete,     &kp DELETE,               21 12   ,  OBS,  50)
+        COMBO(l_one_shift,      &sk LSHFT,             10 11 12 23,  OBS,  50)
+        COMBO(l_one_caps_word,  &caps_word,            12 22      ,  OBS,  50)
+        COMBO(l_one_caps_lock,  &kp CAPSLOCK,          20 21 22 13,  OBS,  50)
+
+        COMBO(l_one_num_7,      &kp N7,                   11 12   ,  ONU,  50)
+        COMBO(l_one_num_8,      &kp N8,                      12 13,  ONU,  50)
+        COMBO(l_one_num_9,      &kp N9,                   11 12 13,  ONU,  50)
+        COMBO(l_one_num_0,      &kp N0,                   21 22   ,  ONU,  50)
+        COMBO(l_one_num_dot,    &kp DOT,                     22 23,  ONU,  50)
+
+        COMBO(l_one_sym_at,     &kp AT,                10 11      ,  OSY,  50)
+        COMBO(l_one_sym_bslh,   &kp BSLH,                 11 12   ,  OSY,  50)
+        COMBO(l_one_sym_prcnt,  &kp PRCNT,             10 11 12   ,  OSY,  50)
+        COMBO(l_one_sym_pipe,   &kp PIPE,              20 21      ,  OSY,  50)
+        COMBO(l_one_sym_amps,   &kp AMPS,                 21 22   ,  OSY,  50)
+        COMBO(l_one_sym_plus,   &kp PLUS,              20 21 22   ,  OSY,  50)
+
+        COMBO(l_one_par_lt,     &kp LT,                10 11      ,  OPA,  50)
+        COMBO(l_one_par_gt,     &kp GT,                   11 12   ,  OPA,  50)
+        COMBO(l_one_par_grave,  &kp GRAVE,             10 11 12   ,  OPA,  50)
+        COMBO(l_one_par_tilde,  &kp TILDE,             20 21      ,  OPA,  50)
+        COMBO(l_one_par_caret,  &kp CARET,                21 22   ,  OPA,  50)
     };
 
     // conditional_layers {
@@ -348,6 +422,52 @@
             &kp ESC    &kp S      &kp D      &kp F      &kp G          &kp H      &kp J      &kp K      &kp L      &kp ENTER
             &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp LARW   &kp DARW   &kp UARW   &kp RARW
                                              &kp D      &kp F          &kp J      &kp K
+            >;
+        };
+
+
+        one_base_layer {
+            bindings = <
+            &none      &none      &none      &none      &none          &none      &none      &none      &none      &none
+            &lt OME O  &kp I      &kp E      &lt OPA N  &none          &none      &lt OPA N  &kp E      &kp I      &lt OME O
+            &lt ONU A  &kp R      &kp S      &lt OSY T  &none          &none      &lt OSY T  &kp S      &kp R      &lt ONU A
+                                             &none      &none          &none      &none
+            >;
+        };
+
+        one_number_layer {
+            bindings = <
+            &none      &none      &none      &none      &none          &none      &none      &none      &none      &none
+            &kp N0     &kp N4     &kp N5     &kp N6     &none          &none      &kp N6     &kp N5     &kp N4     &kp N0
+            &none      &kp N1     &kp N2     &kp N3     &none          &none      &kp N3     &kp N2     &kp N1     &none
+                                             &none      &none          &none      &none
+            >;
+        };
+
+        one_symbol_layer {
+            bindings = <
+            &none      &none      &none      &none      &none          &none      &none      &none      &none      &none
+            &kp AMPS   &kp ASTRK  &kp UNDER  &kp EXCL   &none          &none      &kp EXCL   &kp UNDER  &kp ASTRK  &kp AMPS
+            &kp HASH   &kp EQUAL  &kp MINUS  &none      &none          &none      &none      &kp MINUS  &kp EQUAL  &kp HASH
+                                             &none      &none          &none      &none
+            >;
+        };
+
+        one_parenthsis_layer {
+            bindings = <
+            &none      &none      &none      &none      &none          &none      &none      &none      &none      &none
+            &kp LBRC   &kp LPAR   &kp RPAR   &none      &none          &none      &none      &kp LPAR   &kp RPAR  &kp LBRC
+            &kp RBRC   &kp LBKT   &kp RBKT   &none      &none          &none      &none      &kp LBKT   &kp RBKT  &kp RBRC
+                                             &none      &none          &none      &none
+            >;
+        };
+
+        one_media_layer {
+            bindings = <
+            &none      &none      &none      &none      &none          &none      &none      &none      &none      &none
+            &none      &kp LPAR   &kp RPAR   &none      &none          &none      &none      &kp LPAR   &kp RPAR  &kp LBRC
+            &kp LBRC   &kp LBKT   &kp RBKT   &none      &none          &none      &none      &kp LBKT   &kp RBKT  &kp RBRC
+                                             &none      &none          &none      &none
             >;
         };
     };
